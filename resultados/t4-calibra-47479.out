@@ -1,0 +1,36 @@
+==== job 47479 (t4-calibra) em 2026-11-25 22:07:36
+nos: atlantica06   DADOS=dados/ctu13_s1.bin K=16 AMOSTRA=100000 SEMENTE=42 REPS=10
+git: 2c8545d
+---- lscpu (no atlantica06)
+CPU(s):                          16
+Thread(s) per core:              2
+Core(s) per socket:              4
+Socket(s):                       2
+NUMA node(s):                    2
+Model name:                      Intel(R) Xeon(R) CPU           E5520  @ 2.27GHz
+---- como o Slurm conta as CPUs deste no (os scripts supoem CPUTot=16)
+CoresPerSocket=4 CPUTot=16 Sockets=2 ThreadsPerCore=2 
+---- Open MPI
+mpirun (Open MPI) 4.1.1
+---- entrada
+-rw-r--r-- 1 cp33010 CP330 225970900 Nov 25 22:05 dados/ctu13_s1.bin
+-rw-r--r-- 1 cp33010 CP330      1046 Nov 25 22:05 dados/ctu13_s1.json
+====
+---- CALIBRA dados=dados/ctu13_s1.bin K=8
+iteracoes=10 inercia=5.9432216165e+13 checksum=4082735266295
+tempo: io=19.2056 init=0.0400 laco=6.7814 total=6.8213 s
+---- CALIBRA dados=dados/ctu13_s1.bin K=16
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.1385 init=0.0682 laco=46.9167 total=46.9849 s
+---- CALIBRA dados=dados/ctu13_s1.bin K=32
+iteracoes=32 inercia=1.7776502585e+13 checksum=10910668030068
+tempo: io=0.1303 init=0.1242 laco=81.7121 total=81.8363 s
+---- CALIBRA dados=dados/ctu13_s1_m1000000.bin K=8
+iteracoes=9 inercia=2.0794075659e+13 checksum=1752125306270
+tempo: io=6.8018 init=0.0349 laco=2.1572 total=2.1921 s
+---- CALIBRA dados=dados/ctu13_s1_m1000000.bin K=16
+iteracoes=37 inercia=1.1779879691e+13 checksum=2582887337368
+tempo: io=0.0499 init=0.0634 laco=17.0530 total=17.1164 s
+---- CALIBRA dados=dados/ctu13_s1_m1000000.bin K=32
+iteracoes=26 inercia=5.7971172959e+12 checksum=5089016395322
+tempo: io=0.0466 init=0.1191 laco=23.5961 total=23.7152 s

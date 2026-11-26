@@ -1,0 +1,48 @@
+==== job 47502 (t4-avaliacao) em 2026-11-25 23:56:29
+nos: atlantica[06-09]   DADOS=dados/ctu13_s1.bin K=16 AMOSTRA=100000 SEMENTE=42 REPS=10
+git: 2c8545d
+---- lscpu (no atlantica06)
+CPU(s):                          16
+Thread(s) per core:              2
+Core(s) per socket:              4
+Socket(s):                       2
+NUMA node(s):                    2
+Model name:                      Intel(R) Xeon(R) CPU           E5520  @ 2.27GHz
+---- como o Slurm conta as CPUs deste no (os scripts supoem CPUTot=16)
+CoresPerSocket=4 CPUTot=16 Sockets=2 ThreadsPerCore=2 
+---- Open MPI
+mpirun (Open MPI) 4.1.1
+---- entrada
+-rw-r--r-- 1 cp33010 CP330 225970900 Nov 25 22:05 dados/ctu13_s1.bin
+-rw-r--r-- 1 cp33010 CP330      1046 Nov 25 22:05 dados/ctu13_s1.json
+====
+k-means MPI (allreduce): P=64 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0207 init=0.2293 laco=1.7982 total=2.0275 s
+RESULTADO,mpi_allreduce,64,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_allreduce,64,0.020655,0.229299,1.798181,2.027480
+FASES,mpi_allreduce,64,1.526713,1.512723,1.544860,0.137505,0.040391,0.247909,0.132630,0.020959,0.229746
+TAMANHOS,mpi_allreduce,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+ cl    fluxos    backgr  normal   botnet  %bot*  perfil medio do cluster
+  1   1019245    969202   20846    29197  58.3%  dur=0.0155 pkts=2 bytes=234 udp dns <== BOTNET
+  3    660510    660509       0        1 100.0%  dur=0.0711 pkts=2.14 bytes=252 udp <== BOTNET
+  0    378631    378626       0        5 100.0%  dur=1.57e+03 pkts=6.56 bytes=585 src_bytes udp <== BOTNET
+  8    141870    127499    5703     8668  60.3%  dur=2.62 pkts=9.25 bytes=1.1e+03 src_bytes tcp web <== BOTNET
+  6    101748     98690    2571      487  15.9%  dur=75.4 pkts=26.8 bytes=8.44e+03 tcp web
+ 13     96637     96637       0        0   0.0%  dur=1.29e+03 pkts=7.15 bytes=1.53e+03 udp
+  4     92120     90710    1021      389  27.6%  dur=1.4 pkts=35.5 bytes=2.01e+04 tcp web
+ 10     77034     76772       3      259  98.9%  dur=1.04 pkts=6.02 bytes=433 src_bytes tcp <== BOTNET
+ 11     58434     58425       9        0   0.0%  dur=11.7 pkts=3.21 bytes=355 src_bytes udp
+  5     50846     49251      11     1584  99.3%  dur=2.03 pkts=1.83 bytes=115 src_bytes tcp <== BOTNET
+  7     36943     36902      39        2   4.9%  dur=3.4 pkts=2 bytes=176 src_bytes icmp
+  2     29633     29306       2      325  99.4%  dur=1.45 pkts=3.09 bytes=191 src_bytes tcp <== BOTNET
+ 15     27098     27032      66        0   0.0%  dur=2.07e+03 pkts=10.4 bytes=1.23e+03 src_bytes udp
+ 12     22586     22510      76        0   0.0%  dur=5.99 pkts=2.34 bytes=283 src_bytes udp
+ 14     17128     17128       0        0   0.0%  dur=0.28 pkts=2.28 bytes=273 udp
+  9     14173     14089      40       44  52.4%  dur=670 pkts=82.3 bytes=1.04e+04 src_bytes tcp <== BOTNET
+* fracao de botnet entre os fluxos rotulados (normal + botnet) do cluster
+
+clusters botnet: 8 de 16
+deteccao (fluxos rotulados): precisao=0.601 revocacao=0.979 F1=0.745  (TP=40083 FP=26605 FN=878)
+pureza (normal x botnet): 0.615
+background nos clusters botnet: 2305254 fluxos (83.7% do background)

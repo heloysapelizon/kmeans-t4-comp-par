@@ -1,0 +1,553 @@
+==== job 47494 (t4-verificacao-bcast) em 2026-11-25 23:27:37
+nos: atlantica[06-09]   DADOS=dados/ctu13_s1.bin K=16 AMOSTRA=100000 SEMENTE=42 REPS=10
+git: 2c8545d
+---- lscpu (no atlantica06)
+CPU(s):                          16
+Thread(s) per core:              2
+Core(s) per socket:              4
+Socket(s):                       2
+NUMA node(s):                    2
+Model name:                      Intel(R) Xeon(R) CPU           E5520  @ 2.27GHz
+---- como o Slurm conta as CPUs deste no (os scripts supoem CPUTot=16)
+CoresPerSocket=4 CPUTot=16 Sockets=2 ThreadsPerCore=2 
+---- Open MPI
+mpirun (Open MPI) 4.1.1
+---- entrada
+-rw-r--r-- 1 cp33010 CP330 225970900 Nov 25 22:05 dados/ctu13_s1.bin
+-rw-r--r-- 1 cp33010 CP330      1046 Nov 25 22:05 dados/ctu13_s1.json
+====
+DISTRIBUICAO P=2 (srun -N 1 -n 2 -c 2 --distribution=block --cpu-bind=none ):       2 atlantica07 
+DISTRIBUICAO P=4 (srun -N 1 -n 4 -c 2 --distribution=block --cpu-bind=none ):       4 atlantica07 
+DISTRIBUICAO P=8 (srun -N 1 -n 8 -c 2 --distribution=block --cpu-bind=none ):       8 atlantica07 
+DISTRIBUICAO P=16 (srun -N 2 -n 16 -c 2 --distribution=block --cpu-bind=none ):       8 atlantica07       8 atlantica08 
+srun: Warning: can't honor --ntasks-per-node set to 16 which doesn't match the requested tasks 32 with the number of requested nodes 4. Ignoring --ntasks-per-node.
+DISTRIBUICAO P=32 (srun -N 4 -n 32 -c 2 --distribution=block --cpu-bind=none ):       8 atlantica06       8 atlantica07       8 atlantica08       8 atlantica09 
+DISTRIBUICAO P=64 (srun -N 4 -n 64 -c 1 --distribution=block --cpu-bind=none ):      16 atlantica06      16 atlantica07      16 atlantica08      16 atlantica09 
+---- repeticao 1
+k-means MPI (bcast): P=2 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0811 init=0.0683 laco=23.7261 total=23.7944 s
+RESULTADO,mpi_bcast,2,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,2,0.081135,0.068327,23.726065,23.794392
+FASES,mpi_bcast,2,23.662246,23.600944,23.723548,0.062821,0.001386,0.124256,0.000996,0.000863,0.001129
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=4 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0533 init=0.0664 laco=12.0649 total=12.1313 s
+RESULTADO,mpi_bcast,4,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,4,0.053304,0.066445,12.064873,12.131318
+FASES,mpi_bcast,4,11.876446,11.755432,12.024507,0.187302,0.039255,0.308348,0.001122,0.001091,0.001196
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=8 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0514 init=0.0666 laco=6.2258 total=6.2924 s
+RESULTADO,mpi_bcast,8,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,8,0.051369,0.066646,6.225776,6.292422
+FASES,mpi_bcast,8,6.209631,6.203714,6.221463,0.015069,0.003376,0.020954,0.001073,0.000936,0.001128
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=16 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0275 init=0.0841 laco=3.1999 total=3.2840 s
+RESULTADO,mpi_bcast,16,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,16,0.027483,0.084125,3.199892,3.284017
+FASES,mpi_bcast,16,3.110799,3.098601,3.152185,0.079743,0.038466,0.093154,0.009187,0.004100,0.012266
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+srun: Warning: can't honor --ntasks-per-node set to 16 which doesn't match the requested tasks 32 with the number of requested nodes 4. Ignoring --ntasks-per-node.
+k-means MPI (bcast): P=32 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0145 init=0.1225 laco=1.6713 total=1.7938 s
+RESULTADO,mpi_bcast,32,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,32,0.014485,0.122487,1.671345,1.793832
+FASES,mpi_bcast,32,1.550286,1.547159,1.561269,0.093597,0.080660,0.102287,0.026948,0.019792,0.039684
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=64 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0142 init=0.2299 laco=1.9408 total=2.1706 s
+RESULTADO,mpi_bcast,64,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,64,0.014207,0.229875,1.940755,2.170630
+FASES,mpi_bcast,64,1.526829,1.518398,1.544223,0.278846,0.182345,0.389913,0.133947,0.022476,0.232878
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+---- repeticao 2
+k-means MPI (bcast): P=64 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0245 init=0.2351 laco=1.9465 total=2.1815 s
+RESULTADO,mpi_bcast,64,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,64,0.024527,0.235057,1.946473,2.181530
+FASES,mpi_bcast,64,1.527269,1.519498,1.543727,0.284474,0.176685,0.394658,0.133625,0.023026,0.241212
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+srun: Warning: can't honor --ntasks-per-node set to 16 which doesn't match the requested tasks 32 with the number of requested nodes 4. Ignoring --ntasks-per-node.
+k-means MPI (bcast): P=32 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0145 init=0.1232 laco=3.1314 total=3.2547 s
+RESULTADO,mpi_bcast,32,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,32,0.014546,0.123207,3.131447,3.254653
+FASES,mpi_bcast,32,1.650378,1.549151,3.078090,1.454742,0.031315,1.561309,0.025915,0.020273,0.035026
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=16 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0255 init=0.0957 laco=3.1904 total=3.2861 s
+RESULTADO,mpi_bcast,16,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,16,0.025465,0.095708,3.190415,3.286123
+FASES,mpi_bcast,16,3.108638,3.098905,3.128408,0.072603,0.055095,0.082903,0.009034,0.004463,0.012436
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=8 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0453 init=0.0860 laco=6.2515 total=6.3375 s
+RESULTADO,mpi_bcast,8,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,8,0.045289,0.085981,6.251546,6.337527
+FASES,mpi_bcast,8,6.211497,6.206259,6.239784,0.038864,0.010583,0.044145,0.001181,0.001106,0.001254
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=4 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0502 init=0.0676 laco=11.9377 total=12.0053 s
+RESULTADO,mpi_bcast,4,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,4,0.050203,0.067584,11.937738,12.005322
+FASES,mpi_bcast,4,11.837965,11.776204,11.890232,0.098825,0.046356,0.160723,0.000946,0.000810,0.001147
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=2 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0803 init=0.0691 laco=23.7403 total=23.8094 s
+RESULTADO,mpi_bcast,2,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,2,0.080341,0.069127,23.740316,23.809443
+FASES,mpi_bcast,2,23.677138,23.616584,23.737691,0.062272,0.001979,0.122565,0.000900,0.000644,0.001155
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+---- repeticao 3
+k-means MPI (bcast): P=2 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0803 init=0.0689 laco=23.8161 total=23.8851 s
+RESULTADO,mpi_bcast,2,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,2,0.080283,0.068924,23.816143,23.885067
+FASES,mpi_bcast,2,23.647626,23.601127,23.694125,0.167575,0.121322,0.213828,0.000935,0.000694,0.001177
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=4 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0502 init=0.0678 laco=11.9179 total=11.9857 s
+RESULTADO,mpi_bcast,4,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,4,0.050249,0.067819,11.917893,11.985712
+FASES,mpi_bcast,4,11.806893,11.778879,11.839058,0.110050,0.077974,0.138040,0.000945,0.000860,0.001031
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=8 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0504 init=0.0669 laco=6.2243 total=6.2912 s
+RESULTADO,mpi_bcast,8,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,8,0.050412,0.066895,6.224323,6.291218
+FASES,mpi_bcast,8,6.208313,6.203003,6.220752,0.014909,0.002321,0.020182,0.001099,0.001002,0.001246
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=16 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0321 init=0.0994 laco=3.1863 total=3.2857 s
+RESULTADO,mpi_bcast,16,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,16,0.032066,0.099371,3.186306,3.285677
+FASES,mpi_bcast,16,3.107522,3.098774,3.129658,0.069771,0.048505,0.082122,0.008874,0.004666,0.011281
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+srun: Warning: can't honor --ntasks-per-node set to 16 which doesn't match the requested tasks 32 with the number of requested nodes 4. Ignoring --ntasks-per-node.
+k-means MPI (bcast): P=32 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0145 init=0.1237 laco=1.6739 total=1.7976 s
+RESULTADO,mpi_bcast,32,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,32,0.014479,0.123733,1.673850,1.797583
+FASES,mpi_bcast,32,1.549981,1.547364,1.558458,0.096454,0.084556,0.105036,0.027045,0.020634,0.039767
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=64 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0191 init=0.2515 laco=1.9481 total=2.1996 s
+RESULTADO,mpi_bcast,64,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,64,0.019093,0.251498,1.948123,2.199621
+FASES,mpi_bcast,64,1.527533,1.516774,1.547257,0.285958,0.174464,0.403483,0.133378,0.021785,0.249198
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+---- repeticao 4
+k-means MPI (bcast): P=64 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0260 init=0.2659 laco=1.9475 total=2.2133 s
+RESULTADO,mpi_bcast,64,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,64,0.025962,0.265856,1.947482,2.213339
+FASES,mpi_bcast,64,1.528660,1.517271,1.554359,0.283463,0.180723,0.407924,0.134141,0.021931,0.242239
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+srun: Warning: can't honor --ntasks-per-node set to 16 which doesn't match the requested tasks 32 with the number of requested nodes 4. Ignoring --ntasks-per-node.
+k-means MPI (bcast): P=32 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0148 init=0.1267 laco=1.6810 total=1.8077 s
+RESULTADO,mpi_bcast,32,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,32,0.014796,0.126690,1.681014,1.807704
+FASES,mpi_bcast,32,1.550375,1.547290,1.561439,0.103622,0.087315,0.111611,0.026293,0.020054,0.038679
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=16 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0275 init=0.0812 laco=3.1717 total=3.2529 s
+RESULTADO,mpi_bcast,16,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,16,0.027508,0.081198,3.171732,3.252930
+FASES,mpi_bcast,16,3.106955,3.098523,3.120229,0.055487,0.040768,0.063111,0.009145,0.004403,0.011983
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=8 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0458 init=0.0894 laco=6.2625 total=6.3518 s
+RESULTADO,mpi_bcast,8,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,8,0.045780,0.089387,6.262461,6.351848
+FASES,mpi_bcast,8,6.214491,6.205170,6.234978,0.046825,0.026245,0.056168,0.001141,0.001039,0.001231
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=4 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0538 init=0.0683 laco=11.9590 total=12.0274 s
+RESULTADO,mpi_bcast,4,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,4,0.053845,0.068344,11.959030,12.027374
+FASES,mpi_bcast,4,11.850618,11.807156,11.939887,0.107361,0.018165,0.150803,0.001048,0.000976,0.001122
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=2 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0805 init=0.0676 laco=23.9219 total=23.9895 s
+RESULTADO,mpi_bcast,2,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,2,0.080548,0.067591,23.921884,23.989476
+FASES,mpi_bcast,2,23.742618,23.647158,23.838078,0.178256,0.082668,0.273844,0.001008,0.000881,0.001134
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+---- repeticao 5
+k-means MPI (bcast): P=2 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0791 init=0.0682 laco=23.8014 total=23.8697 s
+RESULTADO,mpi_bcast,2,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,2,0.079078,0.068221,23.801445,23.869666
+FASES,mpi_bcast,2,23.646821,23.599408,23.694234,0.153632,0.106128,0.201136,0.000990,0.000900,0.001081
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=4 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0514 init=0.0648 laco=11.9170 total=11.9818 s
+RESULTADO,mpi_bcast,4,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,4,0.051382,0.064840,11.916976,11.981816
+FASES,mpi_bcast,4,11.817536,11.771321,11.914966,0.098472,0.000888,0.144698,0.000965,0.000883,0.001119
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=8 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0515 init=0.0668 laco=6.2279 total=6.2947 s
+RESULTADO,mpi_bcast,8,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,8,0.051504,0.066795,6.227894,6.294689
+FASES,mpi_bcast,8,6.208592,6.204351,6.214454,0.018154,0.012345,0.022518,0.001145,0.001023,0.001300
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=16 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0278 init=0.0840 laco=3.1884 total=3.2723 s
+RESULTADO,mpi_bcast,16,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,16,0.027778,0.083954,3.188388,3.272342
+FASES,mpi_bcast,16,3.107086,3.097801,3.139978,0.071700,0.040918,0.083533,0.009434,0.004524,0.012715
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+srun: Warning: can't honor --ntasks-per-node set to 16 which doesn't match the requested tasks 32 with the number of requested nodes 4. Ignoring --ntasks-per-node.
+k-means MPI (bcast): P=32 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0151 init=0.1238 laco=1.7829 total=1.9067 s
+RESULTADO,mpi_bcast,32,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,32,0.015125,0.123757,1.782918,1.906675
+FASES,mpi_bcast,32,1.557884,1.546914,1.655388,0.197456,0.102491,0.214254,0.027197,0.020544,0.040108
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=64 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0255 init=0.2409 laco=1.9465 total=2.1874 s
+RESULTADO,mpi_bcast,64,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,64,0.025532,0.240920,1.946520,2.187440
+FASES,mpi_bcast,64,1.527038,1.519695,1.543982,0.284478,0.165404,0.399016,0.133928,0.023421,0.251179
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+---- repeticao 6
+k-means MPI (bcast): P=64 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0168 init=0.2342 laco=1.9439 total=2.1781 s
+RESULTADO,mpi_bcast,64,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,64,0.016753,0.234223,1.943885,2.178108
+FASES,mpi_bcast,64,1.527519,1.517760,1.549079,0.281100,0.190889,0.398799,0.134061,0.022383,0.224637
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+srun: Warning: can't honor --ntasks-per-node set to 16 which doesn't match the requested tasks 32 with the number of requested nodes 4. Ignoring --ntasks-per-node.
+k-means MPI (bcast): P=32 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0144 init=0.1242 laco=1.6850 total=1.8092 s
+RESULTADO,mpi_bcast,32,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,32,0.014390,0.124203,1.685022,1.809225
+FASES,mpi_bcast,32,1.551545,1.547025,1.580319,0.106228,0.064757,0.116778,0.026551,0.019935,0.039093
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1317 [pmixp_coll_tree_reset_if_to] mpi/pmix: ERROR: 0x14c87c02a6f0: collective timeout seq=0
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll.c:281 [pmixp_coll_log] mpi/pmix: ERROR: Dumping collective state
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1333 [pmixp_coll_tree_log] mpi/pmix: ERROR: 0x14c87c02a6f0: COLL_FENCE_TREE state seq=0 contribs: loc=1/prnt=0/child=0
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1338 [pmixp_coll_tree_log] mpi/pmix: ERROR: my peerid: 0:atlantica06
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1341 [pmixp_coll_tree_log] mpi/pmix: ERROR: root host: 0:atlantica06
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1355 [pmixp_coll_tree_log] mpi/pmix: ERROR: child contribs [1]:
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1381 [pmixp_coll_tree_log] mpi/pmix: ERROR: 	 done contrib: -
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1383 [pmixp_coll_tree_log] mpi/pmix: ERROR: 	 wait contrib: atlantica08
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1388 [pmixp_coll_tree_log] mpi/pmix: ERROR: status: coll=COLL_COLLECT upfw=COLL_SND_NONE dfwd=COLL_SND_NONE
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1392 [pmixp_coll_tree_log] mpi/pmix: ERROR: dfwd status: dfwd_cb_cnt=0, dfwd_cb_wait=0
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1394 [pmixp_coll_tree_log] mpi/pmix: ERROR: bufs (offset/size): upfw 86/16415, dfwd 67/16415
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1317 [pmixp_coll_tree_reset_if_to] mpi/pmix: ERROR: 0x152f900338c0: collective timeout seq=0
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll.c:281 [pmixp_coll_log] mpi/pmix: ERROR: Dumping collective state
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1333 [pmixp_coll_tree_log] mpi/pmix: ERROR: 0x152f900338c0: COLL_FENCE_TREE state seq=0 contribs: loc=1/prnt=0/child=0
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1338 [pmixp_coll_tree_log] mpi/pmix: ERROR: my peerid: 1:atlantica07
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1341 [pmixp_coll_tree_log] mpi/pmix: ERROR: root host: 1:atlantica07
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1344 [pmixp_coll_tree_log] mpi/pmix: ERROR: prnt host: 1:atlantica07
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1346 [pmixp_coll_tree_log] mpi/pmix: ERROR: prnt contrib:
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1347 [pmixp_coll_tree_log] mpi/pmix: ERROR: 	 [1:atlantica07] false
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1388 [pmixp_coll_tree_log] mpi/pmix: ERROR: status: coll=COLL_UPFWD upfw=COLL_SND_ACTIVE dfwd=COLL_SND_NONE
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1392 [pmixp_coll_tree_log] mpi/pmix: ERROR: dfwd status: dfwd_cb_cnt=0, dfwd_cb_wait=0
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1394 [pmixp_coll_tree_log] mpi/pmix: ERROR: bufs (offset/size): upfw 86/16415, dfwd 67/16415
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1317 [pmixp_coll_tree_reset_if_to] mpi/pmix: ERROR: 0x14c87c02a6f0: collective timeout seq=1
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll.c:281 [pmixp_coll_log] mpi/pmix: ERROR: Dumping collective state
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1333 [pmixp_coll_tree_log] mpi/pmix: ERROR: 0x14c87c02a6f0: COLL_FENCE_TREE state seq=1 contribs: loc=1/prnt=0/child=0
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1338 [pmixp_coll_tree_log] mpi/pmix: ERROR: my peerid: 0:atlantica06
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1341 [pmixp_coll_tree_log] mpi/pmix: ERROR: root host: 0:atlantica06
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1355 [pmixp_coll_tree_log] mpi/pmix: ERROR: child contribs [1]:
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1381 [pmixp_coll_tree_log] mpi/pmix: ERROR: 	 done contrib: -
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1383 [pmixp_coll_tree_log] mpi/pmix: ERROR: 	 wait contrib: atlantica08
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1388 [pmixp_coll_tree_log] mpi/pmix: ERROR: status: coll=COLL_COLLECT upfw=COLL_SND_NONE dfwd=COLL_SND_NONE
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1392 [pmixp_coll_tree_log] mpi/pmix: ERROR: dfwd status: dfwd_cb_cnt=0, dfwd_cb_wait=0
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1394 [pmixp_coll_tree_log] mpi/pmix: ERROR: bufs (offset/size): upfw 86/16415, dfwd 67/16415
+k-means MPI (bcast): P=16 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0385 init=0.0867 laco=3.1541 total=3.2408 s
+RESULTADO,mpi_bcast,16,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,16,0.038464,0.086688,3.154112,3.240800
+FASES,mpi_bcast,16,3.095289,3.089352,3.102713,0.049853,0.043214,0.053974,0.008846,0.004328,0.011412
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1317 [pmixp_coll_tree_reset_if_to] mpi/pmix: ERROR: 0x152f900338c0: collective timeout seq=1
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll.c:281 [pmixp_coll_log] mpi/pmix: ERROR: Dumping collective state
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1333 [pmixp_coll_tree_log] mpi/pmix: ERROR: 0x152f900338c0: COLL_FENCE_TREE state seq=1 contribs: loc=1/prnt=0/child=0
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1338 [pmixp_coll_tree_log] mpi/pmix: ERROR: my peerid: 1:atlantica07
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1341 [pmixp_coll_tree_log] mpi/pmix: ERROR: root host: 1:atlantica07
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1344 [pmixp_coll_tree_log] mpi/pmix: ERROR: prnt host: 1:atlantica07
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1346 [pmixp_coll_tree_log] mpi/pmix: ERROR: prnt contrib:
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1347 [pmixp_coll_tree_log] mpi/pmix: ERROR: 	 [1:atlantica07] false
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1388 [pmixp_coll_tree_log] mpi/pmix: ERROR: status: coll=COLL_UPFWD upfw=COLL_SND_ACTIVE dfwd=COLL_SND_NONE
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1392 [pmixp_coll_tree_log] mpi/pmix: ERROR: dfwd status: dfwd_cb_cnt=0, dfwd_cb_wait=0
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1394 [pmixp_coll_tree_log] mpi/pmix: ERROR: bufs (offset/size): upfw 86/16415, dfwd 67/16415
+k-means MPI (bcast): P=8 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0464 init=0.0718 laco=6.2624 total=6.3342 s
+RESULTADO,mpi_bcast,8,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,8,0.046405,0.071807,6.262438,6.334245
+FASES,mpi_bcast,8,6.214054,6.204065,6.238400,0.047361,0.022994,0.057285,0.001016,0.000896,0.001078
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=4 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0499 init=0.0657 laco=11.9859 total=12.0516 s
+RESULTADO,mpi_bcast,4,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,4,0.049903,0.065730,11.985862,12.051592
+FASES,mpi_bcast,4,11.897180,11.809315,11.983625,0.087835,0.001491,0.175646,0.000841,0.000744,0.000931
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=2 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0813 init=0.0685 laco=23.7293 total=23.7979 s
+RESULTADO,mpi_bcast,2,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,2,0.081261,0.068541,23.729330,23.797871
+FASES,mpi_bcast,2,23.669561,23.632826,23.706297,0.058896,0.021912,0.095880,0.000866,0.000622,0.001110
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+---- repeticao 7
+k-means MPI (bcast): P=2 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0802 init=0.0689 laco=23.6732 total=23.7421 s
+RESULTADO,mpi_bcast,2,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,2,0.080215,0.068939,23.673176,23.742116
+FASES,mpi_bcast,2,23.602351,23.533334,23.671368,0.069874,0.000802,0.138946,0.000949,0.000894,0.001004
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=4 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0600 init=0.0648 laco=12.0512 total=12.1160 s
+RESULTADO,mpi_bcast,4,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,4,0.060021,0.064827,12.051175,12.116002
+FASES,mpi_bcast,4,11.885674,11.773923,11.969839,0.164612,0.080536,0.276320,0.000885,0.000795,0.000955
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=8 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0606 init=0.0992 laco=6.2571 total=6.3564 s
+RESULTADO,mpi_bcast,8,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,8,0.060646,0.099238,6.257135,6.356372
+FASES,mpi_bcast,8,6.214301,6.205346,6.236390,0.041747,0.019707,0.050631,0.001083,0.001027,0.001154
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=16 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0291 init=0.1019 laco=3.1878 total=3.2897 s
+RESULTADO,mpi_bcast,16,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,16,0.029115,0.101882,3.187839,3.289720
+FASES,mpi_bcast,16,3.107667,3.097929,3.157206,0.070916,0.025023,0.085541,0.009129,0.004138,0.012598
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+srun: Warning: can't honor --ntasks-per-node set to 16 which doesn't match the requested tasks 32 with the number of requested nodes 4. Ignoring --ntasks-per-node.
+k-means MPI (bcast): P=32 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0157 init=0.1237 laco=3.1372 total=3.2610 s
+RESULTADO,mpi_bcast,32,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,32,0.015712,0.123722,3.137232,3.260955
+FASES,mpi_bcast,32,1.649199,1.549213,3.072287,1.460641,0.028856,1.563947,0.026973,0.021486,0.037227
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=64 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0189 init=0.2230 laco=1.9472 total=2.1702 s
+RESULTADO,mpi_bcast,64,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,64,0.018916,0.223023,1.947182,2.170205
+FASES,mpi_bcast,64,1.528140,1.518555,1.546090,0.284109,0.177721,0.399588,0.133695,0.022224,0.244618
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+---- repeticao 8
+k-means MPI (bcast): P=64 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0172 init=0.3253 laco=1.9482 total=2.2735 s
+RESULTADO,mpi_bcast,64,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,64,0.017174,0.325333,1.948214,2.273547
+FASES,mpi_bcast,64,1.528526,1.519421,1.548157,0.285225,0.175450,0.407021,0.133753,0.021086,0.245745
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+srun: Warning: can't honor --ntasks-per-node set to 16 which doesn't match the requested tasks 32 with the number of requested nodes 4. Ignoring --ntasks-per-node.
+k-means MPI (bcast): P=32 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0154 init=0.1234 laco=3.1431 total=3.2666 s
+RESULTADO,mpi_bcast,32,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,32,0.015419,0.123447,3.143103,3.266550
+FASES,mpi_bcast,32,1.648273,1.549724,2.924435,1.467522,0.194337,1.572416,0.026874,0.020152,0.038299
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=16 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0257 init=0.0860 laco=3.1778 total=3.2638 s
+RESULTADO,mpi_bcast,16,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,16,0.025658,0.086013,3.177824,3.263837
+FASES,mpi_bcast,16,3.106897,3.100057,3.127601,0.061442,0.040125,0.068941,0.009328,0.004109,0.012691
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=8 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0512 init=0.0668 laco=6.2308 total=6.2976 s
+RESULTADO,mpi_bcast,8,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,8,0.051235,0.066829,6.230777,6.297606
+FASES,mpi_bcast,8,6.209842,6.199517,6.220319,0.019811,0.009351,0.030063,0.001122,0.001051,0.001193
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=4 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0556 init=0.0691 laco=11.9736 total=12.0427 s
+RESULTADO,mpi_bcast,4,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,4,0.055602,0.069065,11.973645,12.042710
+FASES,mpi_bcast,4,11.855321,11.779992,11.893621,0.117394,0.079238,0.192737,0.000925,0.000784,0.001018
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=2 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0804 init=0.0691 laco=23.8054 total=23.8744 s
+RESULTADO,mpi_bcast,2,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,2,0.080356,0.069066,23.805352,23.874418
+FASES,mpi_bcast,2,23.640712,23.598834,23.682590,0.163777,0.122084,0.205470,0.000858,0.000677,0.001038
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+---- repeticao 9
+k-means MPI (bcast): P=2 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0831 init=0.0683 laco=23.7798 total=23.8481 s
+RESULTADO,mpi_bcast,2,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,2,0.083073,0.068262,23.779803,23.848065
+FASES,mpi_bcast,2,23.625652,23.618235,23.633070,0.153290,0.145643,0.160937,0.000851,0.000630,0.001073
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=4 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0566 init=0.0684 laco=11.9764 total=12.0448 s
+RESULTADO,mpi_bcast,4,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,4,0.056601,0.068372,11.976427,12.044799
+FASES,mpi_bcast,4,11.840010,11.805180,11.922299,0.135493,0.053012,0.170449,0.000922,0.000797,0.001112
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=8 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0540 init=0.0672 laco=6.2276 total=6.2948 s
+RESULTADO,mpi_bcast,8,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,8,0.053967,0.067167,6.227648,6.294815
+FASES,mpi_bcast,8,6.210339,6.204134,6.220899,0.016239,0.005553,0.022494,0.001066,0.000987,0.001191
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=16 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0308 init=0.1116 laco=3.1850 total=3.2966 s
+RESULTADO,mpi_bcast,16,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,16,0.030752,0.111630,3.184950,3.296580
+FASES,mpi_bcast,16,3.108597,3.098400,3.129410,0.066993,0.046583,0.079700,0.009220,0.004401,0.012445
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+srun: Warning: can't honor --ntasks-per-node set to 16 which doesn't match the requested tasks 32 with the number of requested nodes 4. Ignoring --ntasks-per-node.
+k-means MPI (bcast): P=32 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0165 init=0.1238 laco=1.6728 total=1.7966 s
+RESULTADO,mpi_bcast,32,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,32,0.016469,0.123824,1.672787,1.796611
+FASES,mpi_bcast,32,1.549694,1.546967,1.561728,0.095414,0.079294,0.104271,0.027341,0.019424,0.041271
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=64 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0208 init=0.2306 laco=1.9454 total=2.1760 s
+RESULTADO,mpi_bcast,64,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,64,0.020756,0.230631,1.945394,2.176025
+FASES,mpi_bcast,64,1.527036,1.519140,1.541238,0.282694,0.180856,0.394780,0.134696,0.023721,0.238951
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+---- repeticao 10
+k-means MPI (bcast): P=64 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0183 init=0.2438 laco=1.9471 total=2.1909 s
+RESULTADO,mpi_bcast,64,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,64,0.018277,0.243770,1.947087,2.190857
+FASES,mpi_bcast,64,1.527349,1.519155,1.544814,0.285024,0.189288,0.389364,0.133638,0.022051,0.231191
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+srun: Warning: can't honor --ntasks-per-node set to 16 which doesn't match the requested tasks 32 with the number of requested nodes 4. Ignoring --ntasks-per-node.
+k-means MPI (bcast): P=32 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0147 init=0.1282 laco=3.1283 total=3.2565 s
+RESULTADO,mpi_bcast,32,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,32,0.014724,0.128190,3.128303,3.256494
+FASES,mpi_bcast,32,1.648988,1.549200,3.077622,1.453251,0.018451,1.556715,0.025694,0.020713,0.032847
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1317 [pmixp_coll_tree_reset_if_to] mpi/pmix: ERROR: 0x14972802a7b0: collective timeout seq=0
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll.c:281 [pmixp_coll_log] mpi/pmix: ERROR: Dumping collective state
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1333 [pmixp_coll_tree_log] mpi/pmix: ERROR: 0x14972802a7b0: COLL_FENCE_TREE state seq=0 contribs: loc=1/prnt=0/child=0
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1338 [pmixp_coll_tree_log] mpi/pmix: ERROR: my peerid: 0:atlantica06
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1341 [pmixp_coll_tree_log] mpi/pmix: ERROR: root host: 0:atlantica06
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1355 [pmixp_coll_tree_log] mpi/pmix: ERROR: child contribs [1]:
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1381 [pmixp_coll_tree_log] mpi/pmix: ERROR: 	 done contrib: -
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1383 [pmixp_coll_tree_log] mpi/pmix: ERROR: 	 wait contrib: atlantica08
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1388 [pmixp_coll_tree_log] mpi/pmix: ERROR: status: coll=COLL_COLLECT upfw=COLL_SND_NONE dfwd=COLL_SND_NONE
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1392 [pmixp_coll_tree_log] mpi/pmix: ERROR: dfwd status: dfwd_cb_cnt=0, dfwd_cb_wait=0
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1394 [pmixp_coll_tree_log] mpi/pmix: ERROR: bufs (offset/size): upfw 86/16415, dfwd 67/16415
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1317 [pmixp_coll_tree_reset_if_to] mpi/pmix: ERROR: 0x152548027bc0: collective timeout seq=0
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll.c:281 [pmixp_coll_log] mpi/pmix: ERROR: Dumping collective state
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1333 [pmixp_coll_tree_log] mpi/pmix: ERROR: 0x152548027bc0: COLL_FENCE_TREE state seq=0 contribs: loc=1/prnt=0/child=0
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1338 [pmixp_coll_tree_log] mpi/pmix: ERROR: my peerid: 1:atlantica07
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1341 [pmixp_coll_tree_log] mpi/pmix: ERROR: root host: 1:atlantica07
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1344 [pmixp_coll_tree_log] mpi/pmix: ERROR: prnt host: 1:atlantica07
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1346 [pmixp_coll_tree_log] mpi/pmix: ERROR: prnt contrib:
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1347 [pmixp_coll_tree_log] mpi/pmix: ERROR: 	 [1:atlantica07] false
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1388 [pmixp_coll_tree_log] mpi/pmix: ERROR: status: coll=COLL_UPFWD upfw=COLL_SND_ACTIVE dfwd=COLL_SND_NONE
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1392 [pmixp_coll_tree_log] mpi/pmix: ERROR: dfwd status: dfwd_cb_cnt=0, dfwd_cb_wait=0
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1394 [pmixp_coll_tree_log] mpi/pmix: ERROR: bufs (offset/size): upfw 86/16415, dfwd 67/16415
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1317 [pmixp_coll_tree_reset_if_to] mpi/pmix: ERROR: 0x14972802a7b0: collective timeout seq=1
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll.c:281 [pmixp_coll_log] mpi/pmix: ERROR: Dumping collective state
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1333 [pmixp_coll_tree_log] mpi/pmix: ERROR: 0x14972802a7b0: COLL_FENCE_TREE state seq=1 contribs: loc=1/prnt=0/child=0
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1338 [pmixp_coll_tree_log] mpi/pmix: ERROR: my peerid: 0:atlantica06
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1341 [pmixp_coll_tree_log] mpi/pmix: ERROR: root host: 0:atlantica06
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1355 [pmixp_coll_tree_log] mpi/pmix: ERROR: child contribs [1]:
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1381 [pmixp_coll_tree_log] mpi/pmix: ERROR: 	 done contrib: -
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1383 [pmixp_coll_tree_log] mpi/pmix: ERROR: 	 wait contrib: atlantica08
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1388 [pmixp_coll_tree_log] mpi/pmix: ERROR: status: coll=COLL_COLLECT upfw=COLL_SND_NONE dfwd=COLL_SND_NONE
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1392 [pmixp_coll_tree_log] mpi/pmix: ERROR: dfwd status: dfwd_cb_cnt=0, dfwd_cb_wait=0
+slurmstepd-atlantica07: error: atlantica07 [0] /pmixp_coll_tree.c:1394 [pmixp_coll_tree_log] mpi/pmix: ERROR: bufs (offset/size): upfw 86/16415, dfwd 67/16415
+k-means MPI (bcast): P=16 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0307 init=0.0862 laco=3.1687 total=3.2549 s
+RESULTADO,mpi_bcast,16,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,16,0.030738,0.086209,3.168698,3.254907
+FASES,mpi_bcast,16,3.095412,3.089090,3.106491,0.064424,0.052470,0.071020,0.008715,0.004083,0.011214
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1317 [pmixp_coll_tree_reset_if_to] mpi/pmix: ERROR: 0x152548027bc0: collective timeout seq=1
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll.c:281 [pmixp_coll_log] mpi/pmix: ERROR: Dumping collective state
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1333 [pmixp_coll_tree_log] mpi/pmix: ERROR: 0x152548027bc0: COLL_FENCE_TREE state seq=1 contribs: loc=1/prnt=0/child=0
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1338 [pmixp_coll_tree_log] mpi/pmix: ERROR: my peerid: 1:atlantica07
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1341 [pmixp_coll_tree_log] mpi/pmix: ERROR: root host: 1:atlantica07
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1344 [pmixp_coll_tree_log] mpi/pmix: ERROR: prnt host: 1:atlantica07
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1346 [pmixp_coll_tree_log] mpi/pmix: ERROR: prnt contrib:
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1347 [pmixp_coll_tree_log] mpi/pmix: ERROR: 	 [1:atlantica07] false
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1388 [pmixp_coll_tree_log] mpi/pmix: ERROR: status: coll=COLL_UPFWD upfw=COLL_SND_ACTIVE dfwd=COLL_SND_NONE
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1392 [pmixp_coll_tree_log] mpi/pmix: ERROR: dfwd status: dfwd_cb_cnt=0, dfwd_cb_wait=0
+slurmstepd-atlantica08: error: atlantica08 [1] /pmixp_coll_tree.c:1394 [pmixp_coll_tree_log] mpi/pmix: ERROR: bufs (offset/size): upfw 86/16415, dfwd 67/16415
+k-means MPI (bcast): P=8 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0521 init=0.0668 laco=6.2336 total=6.3003 s
+RESULTADO,mpi_bcast,8,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,8,0.052097,0.066763,6.233585,6.300349
+FASES,mpi_bcast,8,6.211029,6.203350,6.221598,0.021552,0.011052,0.029188,0.000999,0.000934,0.001049
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=4 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0559 init=0.0684 laco=11.9871 total=12.0555 s
+RESULTADO,mpi_bcast,4,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,4,0.055863,0.068429,11.987111,12.055539
+FASES,mpi_bcast,4,11.898269,11.869493,11.949670,0.087771,0.036363,0.116677,0.001068,0.000936,0.001183
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098
+k-means MPI (bcast): P=2 N=2824636 D=20 K=16 amostra=100000 semente=42
+iteracoes=36 inercia=3.9743585065e+13 checksum=5738913094438
+tempo: io=0.0791 init=0.0681 laco=23.7870 total=23.8551 s
+RESULTADO,mpi_bcast,2,2824636,20,16,36,3.9743585065e+13,5738913094438
+TEMPOS,mpi_bcast,2,0.079123,0.068135,23.786981,23.855116
+FASES,mpi_bcast,2,23.636376,23.604714,23.668038,0.149561,0.117816,0.181305,0.001042,0.000960,0.001124
+TAMANHOS,mpi_bcast,378631,1019245,29633,660510,92120,50846,101748,36943,141870,14173,77034,58434,22586,96637,17128,27098

@@ -16,7 +16,7 @@ REPS=10
 
 # Os mesmos 4 nos em todos os jobs. A sequencial roda no primeiro; P <= 8 no
 # primeiro, P = 16 nos dois primeiros, P = 32 e 64 nos quatro (secao 5).
-NOS="atlantica03,atlantica04,atlantica05,atlantica06"
+NOS="atlantica06,atlantica07,atlantica08,atlantica09"
 
 # Particao do Slurm (vazio = padrao).
 PARTICAO="LAD_geral"
