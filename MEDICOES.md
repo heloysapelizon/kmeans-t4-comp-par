@@ -73,8 +73,13 @@ Estes parâmetros estão em `config.sh` e em `slurm/comum.sh`.
 
   - `-c 2` reserva as duas threads de um núcleo. Sem isso, 8 processos poderiam cair em 4
     núcleos físicos, como observado no T3.
-  - Os processos são distribuídos em bloco (`--distribution=block`) e com
-    `--cpu-bind=none`, como no T3.
+  - Os processos são distribuídos em bloco (`--distribution=block`) e presos ao seu
+    núcleo: `--cpu-bind=cores` com `-c 2` e `--cpu-bind=threads` com `-c 1` (P = 64).
+    As linhas `MASCARA` do `.out` mostram a máscara de cada processo.
+  - Na primeira medição, com `--cpu-bind=none` (como no T3), o Linux chegou a pôr dois
+    processos nas duas threads do mesmo núcleo com P = 32 em 4 ou 5 das 10 repetições:
+    um processo 2× mais lento e os outros 31 esperando por ele na verificação. Essas
+    saídas ficam em `resultados/cpu-bind-none/`, fora da análise, como exemplo de espera.
 - **Região medida:** depois de uma barreira, da inicialização (amostra, k-means++ e
   `MPI_Bcast` dos centroides) até a parada. T = init + laço. A leitura do arquivo (`io`)
   e o resumo final ficam de fora e são impressos separados.
@@ -194,9 +199,21 @@ make                                    # kmeans_seq e kmeans_mpi, mesmo mpicc e
 O `submete.sh` roda `make` antes de cada submissão. Depois de um `git pull` com mudanças no
 código, os binários são refeitos.
 
-#### 0.5 Teste rápido nos 4 nós (dados sintéticos)
+#### 0.5 Python e teste rápido nos 4 nós (dados sintéticos)
+
+O `python3` do Atlântica (3.8) não vem com numpy. Instale no seu usuário, uma vez (vai
+para `~/.local`, visto pelos nós):
 
 ```bash
+python3 -m pip install --user --upgrade pip
+python3 -m pip install --user numpy pandas matplotlib
+python3 -c "import numpy, pandas, matplotlib; print('ok')"
+```
+
+Teste:
+
+```bash
+mkdir -p dados resultados               # dados/ está no .gitignore e não vem no clone
 python3 scripts/gera_sintetico.py -n 200000 -o dados/teste.binetflow
 python3 scripts/prep.py dados/teste.binetflow -o dados/teste
 source config.sh; P=$PARTICAO; [ -n "$P" ] && P="--partition=$P"
@@ -205,10 +222,9 @@ srun $P $SRUN_MPI -N 4 -n 32 -c 2 -w "$NOS" ./kmeans_mpi -i dados/teste.bin -k 8
 srun $P $SRUN_MPI -N 4 -n 8 -w "$NOS" hostname | sort | uniq -c    # 2 por nó
 ```
 
-As duas linhas `RESULTADO` devem ter iterações, inércia e checksum iguais. Se o
-`python3` do cluster não tiver pandas, use `pip3 install --user pandas numpy matplotlib`
-ou rode os passos com Python (0.5, 1, 7 e 9) no seu computador e copie os arquivos com
-`scp`.
+As duas linhas `RESULTADO` devem ter iterações, inércia e checksum iguais. Se o pip não
+conseguir instalar, rode os passos com Python (0.5, 1, 6 e 8) no seu computador e copie os
+arquivos com `scp`.
 
 ### 1. Baixar e preparar o CTU-13
 
@@ -373,5 +389,8 @@ cabeçalho do relatório.
 - **Erro de PMI no `srun`:** `SRUN_MPI="--mpi=pmix"` (ou `pmi2`) em `config.sh`.
 - **Job some sem saída:** confira se `resultados/` existe (o `submete.sh` cria) e o
   `--time` do `.sbatch`.
+- **Linhas `MASCARA` com a mesma máscara para dois processos, ou aviso de que o binding
+  foi ignorado:** o plugin de afinidade do Slurm não está ativo nesse nó. Registre no
+  relatório e compare as repetições pelo máximo da computação (`FASES`, coluna 6).
 - **`AVISO: parou em max_iter`:** o k-means não convergiu em 1000 iterações com essa
   entrada e esse K. Troque K na calibração; não aumente `-m` só para passar.

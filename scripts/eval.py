@@ -3,10 +3,12 @@
 
 O k-means nao viu os rotulos. Aqui cada cluster e classificado como "botnet"
 se, entre os seus fluxos rotulados (normal + botnet; background nao tem
-rotulo confiavel), a fracao de botnet passa de --limiar. A deteccao e medida
+rotulo confiavel), a fracao de botnet passa de --limiar e ele tem pelo menos
+--min-rotulados fluxos rotulados (senao 1 fluxo de botnet num cluster de 600 mil
+fluxos de background marcaria o cluster inteiro). A deteccao e medida
 nos fluxos rotulados: um fluxo e alertado se cai num cluster botnet.
 
-Uso: python3 scripts/eval.py dados/ctu13_s1 membros.bin [--limiar 0.5]
+Uso: python3 scripts/eval.py dados/ctu13_s1 membros.bin [--limiar 0.5] [--min-rotulados 100]
 """
 import argparse
 import json
@@ -22,6 +24,7 @@ def main():
     ap.add_argument("prefixo", help="prefixo usado no prep.py")
     ap.add_argument("membros", help="saida -o do kmeans_seq/kmeans_mpi")
     ap.add_argument("--limiar", type=float, default=0.5)
+    ap.add_argument("--min-rotulados", type=int, default=100)
     a = ap.parse_args()
 
     meta = json.load(open(a.prefixo + ".json"))
@@ -37,7 +40,7 @@ def main():
     np.add.at(cont, (m, rot), 1)
     rotulados = cont[:, 1] + cont[:, 2]
     frac_bot = np.divide(cont[:, 2], rotulados, out=np.zeros(k), where=rotulados > 0)
-    eh_bot = (frac_bot >= a.limiar) & (cont[:, 2] > 0)
+    eh_bot = (frac_bot >= a.limiar) & (cont[:, 2] > 0) & (rotulados >= a.min_rotulados)
 
     idx = {f: meta["features"].index(f) for f in MOSTRAR if f in meta["features"]}
     print(f"{'cl':>3} {'fluxos':>9} {'backgr':>9} {'normal':>7} {'botnet':>8} "

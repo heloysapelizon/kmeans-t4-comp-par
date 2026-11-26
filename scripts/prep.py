@@ -15,6 +15,7 @@ Uso: python3 scripts/prep.py capture20110810.binetflow [outros.binetflow ...] \
 """
 import argparse
 import json
+import os
 
 import numpy as np
 import pandas as pd
@@ -116,6 +117,7 @@ def main():
     r = rotulos(df)
     n, d = x.shape
 
+    os.makedirs(os.path.dirname(a.saida) or ".", exist_ok=True)
     with open(a.saida + ".bin", "wb") as fp:
         fp.write(b"KMQ1")
         fp.write(np.array([n], dtype=np.int64).tobytes())

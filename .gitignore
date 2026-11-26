@@ -32,3 +32,5 @@ kmeans_seq
 kmeans_mpi
 resultados/*.bin
 __pycache__/
+*.binetflow
+*.binetflow

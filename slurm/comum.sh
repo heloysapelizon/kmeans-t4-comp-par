@@ -7,9 +7,9 @@ eval "$AMBIENTE"
 
 ARGS=(-i "$DADOS" -k "$K" -s "$AMOSTRA" -r "$SEMENTE")
 
-# Processos em bloco (ranks 0..P/nos-1 no primeiro no). --cpu-bind=none como
-# no T3; quem garante um nucleo fisico por processo e o -c (ver cpt_para).
-SRUN_OPTS="--distribution=block --cpu-bind=none $SRUN_MPI"
+# Processos em bloco (ranks 0..P/nos-1 no primeiro no). O binding de CPU vem
+# de bind_para: cada processo fica preso ao seu nucleo (ou thread).
+SRUN_OPTS="--distribution=block $SRUN_MPI"
 
 cabecalho() {
     echo "==== job $SLURM_JOB_ID ($SLURM_JOB_NAME) em $(date "+%Y-%m-%d %H:%M:%S")"
@@ -46,17 +46,33 @@ cpt_para() {
     if [ "$por_no" -le 8 ]; then echo 2; else echo 1; fi
 }
 
+# Binding: com -c 2, cada processo preso as 2 threads de um nucleo fisico
+# (cores); com -c 1 (P = 64, HT), preso a uma thread (threads). Com
+# --cpu-bind=none (a 1a medicao), o Linux chegou a por dois processos nas duas
+# threads do mesmo nucleo com P = 32: um processo 2x mais lento e os outros 31
+# esperando por ele (resultados/cpu-bind-none/).
+bind_para() {
+    if [ "$(cpt_para "$1")" -eq 2 ]; then echo cores; else echo threads; fi
+}
+
 # roda P programa args...
 roda() {
     local P=$1; shift
-    srun -N "$(nos_para "$P")" -n "$P" -c "$(cpt_para "$P")" $SRUN_OPTS "$@"
+    srun -N "$(nos_para "$P")" -n "$P" -c "$(cpt_para "$P")" \
+         --cpu-bind="$(bind_para "$P")" $SRUN_OPTS "$@"
 }
 
-# Registra quantos processos ficaram em cada no.
+# Registra quantos processos ficaram em cada no e a mascara de CPUs de cada um
+# (linhas MASCARA, do --cpu-bind=verbose), para conferir que nao ha dois
+# processos no mesmo nucleo.
 mostra_distribuicao() {
-    local P=$1
-    echo "DISTRIBUICAO P=$P (srun -N $(nos_para "$P") -n $P -c $(cpt_para "$P") $SRUN_OPTS):" \
-         "$(roda "$P" hostname | sort | uniq -c | tr '\n' ' ')"
+    local P=$1 saida
+    saida=$(srun -N "$(nos_para "$P")" -n "$P" -c "$(cpt_para "$P")" \
+                 --cpu-bind="verbose,$(bind_para "$P")" $SRUN_OPTS hostname 2>&1)
+    echo "DISTRIBUICAO P=$P (srun -N $(nos_para "$P") -n $P -c $(cpt_para "$P")" \
+         "--cpu-bind=$(bind_para "$P") $SRUN_OPTS):" \
+         "$(echo "$saida" | grep -v cpu-bind | sort | uniq -c | tr '\n' ' ')"
+    echo "$saida" | grep cpu-bind | sed "s/^/MASCARA P=$P /"
 }
 
 # na_ordem REP lista...: crescente nas repeticoes impares, decrescente nas

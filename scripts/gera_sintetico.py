@@ -8,6 +8,7 @@ e botnet (C&C por IRC, spam SMTP, flood UDP, varredura TCP).
 Uso: python3 scripts/gera_sintetico.py -n 300000 -o dados/sintetico.binetflow
 """
 import argparse
+import os
 
 import numpy as np
 import pandas as pd
@@ -55,6 +56,7 @@ def main():
             "Dport": dp, "State": "CON", "sTos": 0, "dTos": 0, "TotPkts": p,
             "TotBytes": b, "SrcBytes": s, "Label": lab, "_ord": np.flatnonzero(qual == i)}))
     df = pd.concat(linhas).sort_values("_ord").drop(columns="_ord")
+    os.makedirs(os.path.dirname(a.o) or ".", exist_ok=True)
     df.to_csv(a.o, index=False)
     print(f"{a.o}: {len(df)} fluxos")
 
