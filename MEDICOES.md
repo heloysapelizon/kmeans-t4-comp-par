@@ -17,8 +17,8 @@ rodar cada medição no Atlântica. Cada configuração tem o seu script em
 | 5 | Speed-up e eficiência com **P = 1, 2, 4, 8, 16, 32 e 64** | 5.1 | T_P, S = T1/T_P, E = S/P | `TEMPOS,mpi_allreduce,P,...` | fases |
 | 6 | Gráfico de speed-up com **três curvas**: ideal (S = P), teto de Amdahl e medido | 5.1 | — | `speedup.png` | analise.py |
 | 7 | Tempo por fase em **toda a série de P**: computação local, verificação e troca, **média entre os processos**, barras empilhadas (uma por P) | 5.2 | médias por fase | `FASES,...` → `fases.png` | fases |
-| 8 | Na verificação, também o **menor tempo entre os processos** (custo da comunicação); média − menor = **espera** pelo mais lento | 5.2 e 6.2 | mín. e média da verificação | `FASES,...` | fases |
-| 9 | Qual coletiva foi usada na verificação (**P broadcasts** ou **um `MPI_Allreduce`**) e **quanto ela custa** | 6.2 | menor tempo da verificação, nas duas coletivas | `FASES,...` → `verificacao.png` | fases × verificacao-bcast |
+| 8 | Na verificação, também o **menor tempo entre os processos** (custo da comunicação); média − menor = **espera** pelo mais lento | 5.2 e 6.2 | custo (menor tempo por iteração, somado) e média da verificação | `VERIFCUSTO,...` e `FASES,...` | fases |
+| 9 | Qual coletiva foi usada na verificação (**P broadcasts** ou **um `MPI_Allreduce`**) e **quanto ela custa** | 6.2 | custo da verificação, nas duas coletivas | `VERIFCUSTO,...` → `verificacao.png` | fases × verificacao-bcast |
 | 10 | Quanto do tempo vai para verificação e troca, e quanto disso é espera | 6.2 | % por fase | `fases.png` (painel %) | fases |
 | 11 | Efeito do HT | 6.3 | S e E com P = 64 (16 por nó, HT) × P = 32 (8 por nó) | `tabela.csv` | fases |
 | 12 | Distância entre o speed-up medido e o teto de Amdahl | 6.3 | S medido × teto | `speedup.png`, `tabela.csv` | analise.py |
@@ -89,6 +89,12 @@ Estes parâmetros estão em `config.sh` e em `slurm/comum.sh`.
   - troca = `MPI_Allreduce` das somas e contagens.
 
   O processo 0 imprime a média, o mínimo e o máximo de cada fase entre os processos.
+- **Custo da verificação (`VERIFCUSTO`):** em cada iteração, o menor tempo de verificação
+  entre os processos (o do mais lento, que quase não espera), somado nas iterações. O
+  mínimo da soma (`verif_min` em `FASES`) superestima esse custo quando o processo mais
+  lento muda de uma iteração para outra: na 1ª medição, com P = 2 num só nó, ele deu
+  0,12 s, ou 3,4 ms por iteração para um `MPI_Allreduce` de 1 inteiro em memória
+  compartilhada. A espera é `verif_med − VERIFCUSTO`.
 - **Saída:** `resultados/t4-<configuração>-<job>.out`, com o cabeçalho (lscpu, contagem de
   CPUs do Slurm, versão do Open MPI, entrada), as linhas `DISTRIBUICAO` e, por execução:
 
@@ -96,6 +102,7 @@ Estes parâmetros estão em `config.sh` e em `slurm/comum.sh`.
   RESULTADO,<versao>,<P>,<N>,<D>,<K>,<iteracoes>,<inercia>,<checksum>
   TEMPOS,<versao>,<P>,<io>,<init>,<laco>,<total>
   FASES,<versao>,<P>,<comp_med>,<comp_min>,<comp_max>,<verif_med>,<verif_min>,<verif_max>,<troca_med>,<troca_min>,<troca_max>
+  VERIFCUSTO,<versao>,<P>,<custo da verificacao>    (só na MPI)
   SEQFRAC,<init>,<atualizacao>,<total>,<s>          (só na sequencial)
   TAMANHOS,<versao>,<n_0>,...,<n_K-1>
   ```
@@ -128,14 +135,16 @@ Estes parâmetros estão em `config.sh` e em `slurm/comum.sh`.
 - **Uso:**
   - S = T1/T_P, E = S/P e teto de Amdahl = 1/(s + (1−s)/P);
   - barras de fases;
-  - verificação: menor tempo = custo, média − menor = espera;
+  - verificação: custo = `VERIFCUSTO`, média − custo = espera;
+  - troca: com P = 64 ela também tem espera (média bem acima do mínimo), porque os
+    processos saem da verificação em momentos diferentes; reporte o mínimo também;
   - HT: comparar P = 32 com P = 64.
 
 ### verificacao-bcast: `slurm/verificacao-bcast.sbatch`
 
 - **Mede:** a mesma série com a verificação feita por P `MPI_Bcast`, um com cada processo
   como raiz.
-- **Uso:** comparar o menor tempo da verificação com o da série fases. O Allreduce faz a
+- **Uso:** comparar o custo da verificação (`VERIFCUSTO`) com o da série fases. O Allreduce faz a
   redução em árvore, em ~log P passos; os P broadcasts fazem P coletivas em sequência.
 
 ### avaliacao: `slurm/avaliacao.sbatch`
@@ -318,7 +327,7 @@ O que conferir:
 resumo verificacao-bcast                # 6 linhas (P = 2..64), exec=10 cada
 ```
 
-O que conferir: a verificação (`FASES`, colunas 7 a 9) cresce mais rápido com P que no
+O que conferir: o custo da verificação (`VERIFCUSTO`) cresce mais rápido com P que no
 Allreduce, sobretudo com 32 e 64.
 
 ### 6. avaliacao
@@ -330,6 +339,10 @@ tail -30 resultados/t4-avaliacao-[0-9]*.out    # tabela de clusters e F1, se o n
 
 Sem numpy no nó, copie `dados/ctu13_s1.{bin,rotulos,json}` e `resultados/membros.bin`
 para o seu computador e rode lá `python3 scripts/eval.py dados/ctu13_s1 membros.bin`.
+
+Se só o `eval.py` mudou (por exemplo, `--limiar` ou `--min-rotulados`), não precisa rodar o
+k-means de novo: o `membros.bin` é o mesmo. Rode só o `eval.py` e guarde a saída em
+`resultados/eval.txt`; a tabela que está no `t4-avaliacao-*.out` fica desatualizada.
 
 Os passos 3 a 6 podem ser submetidos juntos com `./slurm/submete.sh`. Todos usam
 `--exclusive` nos mesmos nós, então o Slurm os executa um por vez. Submeter um por vez só

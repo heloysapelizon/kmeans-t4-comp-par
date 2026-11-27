@@ -12,6 +12,11 @@
  * Verificacao (-v): "allreduce" (padrao) = um MPI_Allreduce de 1 inteiro;
  * "bcast" = P MPI_Bcast, um por processo (cada um difunde a sua contagem).
  *
+ * Custo da verificacao (linha VERIFCUSTO): em cada iteracao, o menor tempo de
+ * verificacao entre os processos (o do mais lento, que quase nao espera),
+ * somado nas iteracoes. O minimo da soma (FASES) superestima esse custo quando
+ * o processo mais lento muda de uma iteracao para outra.
+ *
  * Uso: srun -n P kmeans_mpi -i dados.bin -k K [-s amostra=100000]
  *          [-r semente=42] [-m max_iter=1000] [-v allreduce|bcast] [-o membros.bin]
  */
@@ -56,7 +61,8 @@ int main(int argc, char **argv)
         }
     }
     int verif_bcast = strcmp(modo, "bcast") == 0;
-    if (!entrada || k < 2 || (!verif_bcast && strcmp(modo, "allreduce") != 0))
+    if (!entrada || k < 2 || max_iter < 1 ||
+        (!verif_bcast && strcmp(modo, "allreduce") != 0))
         uso(argv[0]);
 
     /* ---- leitura do bloco [inicio, fim) (fora da regiao medida) */
@@ -108,6 +114,7 @@ int main(int argc, char **argv)
 
     /* ---- laco de fases paralelas */
     double t_comp = 0, t_verif = 0, t_troca = 0;
+    double *t_verif_it = malloc((size_t)max_iter * sizeof *t_verif_it);
     int iter = 0;
     int64_t mudou_global = 0;
     double t_laco0 = MPI_Wtime();
@@ -132,6 +139,7 @@ int main(int argc, char **argv)
         }
         double c = MPI_Wtime();
         t_verif += c - b;
+        t_verif_it[iter] = c - b;
         iter++;
         if (mudou_global == 0 || iter >= max_iter) break;
 
@@ -166,6 +174,14 @@ int main(int argc, char **argv)
     double tempos[3] = {t_io, t_init, t_laco}, t_max[3];
     MPI_Reduce(tempos, t_max, 3, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 
+    /* custo da verificacao: minimo entre os processos em cada iteracao, somado */
+    double *v_min = rank == 0 ? malloc((size_t)iter * sizeof *v_min) : NULL;
+    MPI_Reduce(t_verif_it, v_min, iter, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
+    double verif_custo = 0;
+    if (rank == 0)
+        for (int i = 0; i < iter; i++) verif_custo += v_min[i];
+    free(v_min); free(t_verif_it);
+
     if (rank == 0) {
         long double inercia = inercia_exata(k, d, soma, cont, s2);
         double total = t_max[1] + t_max[2];
@@ -183,6 +199,7 @@ int main(int argc, char **argv)
         printf("FASES,mpi_%s,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f\n", modo, P,
                f_soma[0] / P, f_min[0], f_max[0], f_soma[1] / P, f_min[1], f_max[1],
                f_soma[2] / P, f_min[2], f_max[2]);
+        printf("VERIFCUSTO,mpi_%s,%d,%.6f\n", modo, P, verif_custo);
         printf("TAMANHOS,mpi_%s", modo);
         for (int i = 0; i < k; i++) printf(",%lld", (long long)cont[i]);
         printf("\n");
